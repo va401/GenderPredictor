@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gender Predictor</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #000000;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .container {
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
+    h1 {
+        margin-top: 0;
+        color: #333333;
+    }
+    input[type="text"] {
+        padding: 10px;
+        margin: 10px;
+        width: 200px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    #result {
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Gender Predictor</h1>
+    <input type="text" id="nameInput" placeholder="Enter your name">
+    <br>
+    <button onclick="predictGender()">Predict</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    function predictGender() {
+        var name = document.getElementById("nameInput").value;
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://api.genderize.io?name=" + name, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var response = JSON.parse(xhr.responseText);
+                var gender = response.gender;
+                if (gender === "male") {
+                    document.getElementById("result").innerHTML = "Predicted gender: Male";
+                } else if (gender === "female") {
+                    document.getElementById("result").innerHTML = "Predicted gender: Female";
+                } else {
+                    document.getElementById("result").innerHTML = "Gender prediction not available";
+                }
+            }
+        };
+        xhr.send();
+    }
+</script>
+
+</body>
+</html>
